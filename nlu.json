@@ -23,6 +23,18 @@
     }
   },
   "intents" : [ {
+    "path" : "/поиск",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "поиск"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
     "path" : "/пока",
     "enabled" : true,
     "shared" : false,
@@ -39,14 +51,31 @@
     "shared" : false,
     "phrases" : [ {
       "text" : "привет"
+    }, {
+      "text" : "Покеда"
+    }, {
+      "text" : "до свидания"
     } ],
     "classificationRules" : {
       "refs" : [ ]
     },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/показать_вакансии",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "показать"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
     "priority" : 0
   } ],
   "entities" : [ ],
-  "enabledSystemEntities" : [ "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url" ],
+  "enabledSystemEntities" : [ "mystem.obsc", "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url", "mlps-obscene.obscene" ],
   "spellerDictionary" : [ ],
   "systemEntities" : [ {
     "name" : "mystem.geo",
@@ -56,7 +85,7 @@
     "enabled" : false
   }, {
     "name" : "mystem.obsc",
-    "enabled" : false
+    "enabled" : true
   }, {
     "name" : "mystem.patrn",
     "enabled" : false
@@ -143,7 +172,7 @@
     "enabled" : false
   }, {
     "name" : "mlps-obscene.obscene",
-    "enabled" : false
+    "enabled" : true
   }, {
     "name" : "zb.datetime",
     "enabled" : false
