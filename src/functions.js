@@ -4,13 +4,40 @@ function fetchVacancies() {
     });
 }
 
-function printVacancies(vacancies) {
-    vacancies.forEach(function (vacancy) {
-        var message = "- " + vacancy.vacancy.company.name + " в " + vacancy.vacancy.region.name + "\n" +
-                      "  Зарплата: " + vacancy.vacancy.salary + "\n" +
-                      "  Контакты: " + vacancy.vacancy.contact_list[0].contact_value + "\n" +
-                      "  [Подробнее](" + vacancy.vacancy.vac_url + ")\n";
-        $reactions.answer(message);
-    });
-}
+// Функция для вывода вакансий с пагинацией
+function showPage(page, vacancies) {
+    var pageSize = 3;
 
+    // Вычисляем индекс начала и конца текущей страницы
+    var startIndex = page * pageSize;
+    var endIndex = Math.min(startIndex + pageSize, vacancies.length);
+
+    var message = "Вакансии с " + (startIndex + 1) + " по " + endIndex + " из " + vacancies.length + ":\n\n";
+
+    // Формируем сообщение с вакансиями для текущей страницы
+    vacancies.slice(startIndex, endIndex).forEach(function (vacancy) {
+        var contact = (vacancy.vacancy.contact_list && vacancy.vacancy.contact_list.length > 0)
+            ? vacancy.vacancy.contact_list[0].contact_value
+            : "нет данных";
+
+        message += "- **" + vacancy.vacancy.company.name + "** в *" + vacancy.vacancy.region.name + "*\n" +
+                   "  Зарплата: " + (vacancy.vacancy.salary || "не указана") + "\n" +
+                   "  Контакты: " + contact + "\n" +
+                   "  [Подробнее](" + vacancy.vacancy.vac_url + ")\n\n";
+    });
+
+    $reactions.answer(message);
+
+    var buttons = [];
+    if (startIndex > 0) {
+        buttons.push("пред");
+    }
+    if (endIndex < vacancies.length) {
+        buttons.push("след");
+    }
+
+    // Если есть кнопки, отображаем их
+    if (buttons.length > 0) {
+        $reactions.buttons(buttons);
+    }
+}

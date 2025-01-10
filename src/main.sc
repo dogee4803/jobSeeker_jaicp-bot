@@ -26,21 +26,40 @@ theme: /
             fetchVacancies().then(function (res) {
                 if (res.status === '200' && res.results.vacancies.length > 0) {
                     $session.vacancies = res.results.vacancies;
+                    $session.page = 0;
                     $reactions.answer("Вакансии успешно найдены! Перехожу к отображению...");
-                    $session.nextState = 'ShowVacancies'
+                    showPage($session.page, $session.vacancies);
                 } else {
-                    # Если вакансий нет
                     $reactions.answer("К сожалению, вакансии по вашему запросу не найдены.");
-                    $session.nextState = 'Clarification'
+                    $session.nextState = 'Clarification';
                 }
             }).catch(function (err) {
                 $reactions.answer("Что-то сервер барахлит. Не могу узнать погоду.");
             });
-
-    state: ShowVacancies
-        intent!: /показать_вакансии
+    
+    state: NextPage
+        intent!: /след
         script:
-            printVacancies($session.vacancies);
+            if ($session.page !== undefined && $session.vacancies) {
+                $session.page++;
+                if ($session.page * 3 < $session.vacancies.length) {
+                    showPage($session.page, $session.vacancies);
+                } else {
+                    $reactions.answer("Это последняя страница.");
+                }
+            } else {
+                $reactions.answer("Сначала выполните поиск вакансий.");
+            }
+            
+    state: PrevPage
+        intent!: /пред
+        script:
+            if ($session.page > 0) {
+                $session.page--;
+                showPage($session.page, $session.vacancies);
+            } else {
+                $reactions.answer("Это первая страница.");
+            }
 
     state: NoMatch
         event!: noMatch
