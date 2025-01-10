@@ -1,7 +1,8 @@
+# Название проекта
 name: zb-cailapub
-
+# Точка входа
 entryPoint: main.sc
-
+# Параметры NLU:
 botEngine: v2
 language: ru
 
