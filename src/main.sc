@@ -56,7 +56,7 @@ theme: /
             });
     
         state: NextPage
-            q: след
+            q: *след*
             script:
                 if ($session.page !== undefined && $session.vacancies) {
                     $session.page++;
@@ -70,7 +70,7 @@ theme: /
                 }
                 
         state: PrevPage
-            q: пред
+            q: *пред*
             script:
                 if ($session.page > 0) {
                     $session.page--;
