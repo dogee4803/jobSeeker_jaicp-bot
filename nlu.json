@@ -35,30 +35,6 @@
     "patterns" : [ ],
     "priority" : 0
   }, {
-    "path" : "/след",
-    "enabled" : true,
-    "shared" : false,
-    "phrases" : [ {
-      "text" : "след"
-    } ],
-    "classificationRules" : {
-      "refs" : [ ]
-    },
-    "patterns" : [ ],
-    "priority" : 0
-  }, {
-    "path" : "/пред",
-    "enabled" : true,
-    "shared" : false,
-    "phrases" : [ {
-      "text" : "пред"
-    } ],
-    "classificationRules" : {
-      "refs" : [ ]
-    },
-    "patterns" : [ ],
-    "priority" : 0
-  }, {
     "path" : "/запрос_минимальной_заработной_платы",
     "enabled" : true,
     "shared" : false,

@@ -55,29 +55,29 @@ theme: /
                 $reactions.answer("Что-то сервер барахлит. Не могу узнать погоду.");
             });
     
-    state: NextPage
-        intent!: /след
-        script:
-            if ($session.page !== undefined && $session.vacancies) {
-                $session.page++;
-                if ($session.page * 3 < $session.vacancies.length) {
+        state: NextPage
+            q: след
+            script:
+                if ($session.page !== undefined && $session.vacancies) {
+                    $session.page++;
+                    if ($session.page * 3 < $session.vacancies.length) {
+                        showPage($session.page, $session.vacancies);
+                    } else {
+                        $reactions.answer("Это последняя страница.");
+                    }
+                } else {
+                    $reactions.answer("Сначала выполните поиск вакансий.");
+                }
+                
+        state: PrevPage
+            q: пред
+            script:
+                if ($session.page > 0) {
+                    $session.page--;
                     showPage($session.page, $session.vacancies);
                 } else {
-                    $reactions.answer("Это последняя страница.");
+                    $reactions.answer("Это первая страница.");
                 }
-            } else {
-                $reactions.answer("Сначала выполните поиск вакансий.");
-            }
-            
-    state: PrevPage
-        intent!: /пред
-        script:
-            if ($session.page > 0) {
-                $session.page--;
-                showPage($session.page, $session.vacancies);
-            } else {
-                $reactions.answer("Это первая страница.");
-            }
 
     state: NoMatch
         event!: noMatch
