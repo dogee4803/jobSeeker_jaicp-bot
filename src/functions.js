@@ -28,16 +28,16 @@ function showPage(page, vacancies) {
 
     $reactions.answer(message);
 
-    var inlineButtons = [];
+    var buttons = [];
     if (startIndex > 0) {
-        inlineButtons.push(text: "пред");
+        buttons.push("пред");
     }
     if (endIndex < vacancies.length) {
-        inlineButtons.push(text: "след");
+        buttons.push("след");
     }
 
     // Если есть кнопки, отображаем их
-    if (inlineButtons.length > 0) {
-        $reactions.inlineButtons(inlineButtons);
+    if (buttons.length > 0) {
+        $reactions.buttons(buttons);
     }
 }
