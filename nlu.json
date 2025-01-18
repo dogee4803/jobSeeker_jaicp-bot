@@ -59,6 +59,19 @@
     "patterns" : [ ],
     "priority" : 0
   }, {
+    "path" : "/запрос_минимальной_заработной_платы",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "salary",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
     "path" : "/пока",
     "enabled" : true,
     "shared" : false,
@@ -86,19 +99,121 @@
     "patterns" : [ ],
     "priority" : 0
   }, {
-    "path" : "/показать_вакансии",
+    "path" : "/запрос_профессии",
     "enabled" : true,
     "shared" : false,
-    "phrases" : [ {
-      "text" : "показать"
-    } ],
+    "phrases" : [ ],
     "classificationRules" : {
-      "refs" : [ ]
+      "refs" : [ {
+        "entityName" : "profession",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/запрос_региона",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "region",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/запрос_типа_занятости",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "employment",
+        "predicate" : "CONTAINS"
+      } ]
     },
     "patterns" : [ ],
     "priority" : 0
   } ],
-  "entities" : [ ],
+  "entities" : [ {
+    "entity" : {
+      "name" : "employment",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ ]
+  }, {
+    "entity" : {
+      "name" : "salary",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ ]
+  }, {
+    "entity" : {
+      "name" : "profession",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ ]
+  }, {
+    "entity" : {
+      "name" : "schedule",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ ]
+  }, {
+    "entity" : {
+      "name" : "region",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ ]
+  } ],
   "enabledSystemEntities" : [ "mystem.obsc", "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url", "mlps-obscene.obscene" ],
   "spellerDictionary" : [ ],
   "systemEntities" : [ {
