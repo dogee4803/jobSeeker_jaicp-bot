@@ -18,24 +18,24 @@ theme: /
     state: AskJobTitle
         intent!: /запрос_профессии
         a: Укажите профессию, например: программист, разработчик, инженер.
-        slot: jobTitle
+        # slot: jobTitle
         
     state: AskLocation
         intent!: /запрос_региона
         a: Укажите регион, в котором вы ищете вакансию, например: Республика Бурятия, Московская область.
-        slot: location
+        #slot: location
         
     state: AskEmployment
         intent!: /запрос_типа_занятости
         a: Укажите желаемый тип занятости, например, полная занятость, Временная и т.д.
-        slot: employment
+        #slot: employment
         
     state: AskSalary
         intent!: /запрос_минимальной_заработной_платы
         random:
             a: Укажите минимальный размер заработной платы
             a: На какую минимальную зарплату вы готовы согласиться?
-        slot: salary
+        #slot: salary
         
     
     state: HandleApiResponse
