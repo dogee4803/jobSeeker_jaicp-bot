@@ -30,10 +30,10 @@ function showPage(page, vacancies) {
 
     var inlineButtons = [];
     if (startIndex > 0) {
-        inlineButtons.push("пред");
+        inlineButtons.push(text: "пред");
     }
     if (endIndex < vacancies.length) {
-        inlineButtons.push("след");
+        inlineButtons.push(text: "след");
     }
 
     // Если есть кнопки, отображаем их
