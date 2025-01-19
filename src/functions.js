@@ -30,14 +30,44 @@ function showPage(page, vacancies) {
 
     var buttons = [];
     if (startIndex > 0) {
-        buttons.push("пред");
+        buttons.push("предыдущая страница");
     }
     if (endIndex < vacancies.length) {
-        buttons.push("след");
+        buttons.push("следующая страница");
     }
 
     // Если есть кнопки, отображаем их
     if (buttons.length > 0) {
         $reactions.buttons(buttons);
+    }
+}
+
+
+// Определяем вопросы для анкеты
+var surveyQuestions = [
+    { key: "jobTitle", question: "Какую профессию вы ищете? Например: программист, инженер." },
+    { key: "region", question: "В каком регионе вы ищете работу? Например: Республика Бурятия, Московская область." },
+    { key: "city", question: "В каком городе вы ищете работу? Например: Улан-Удэ, Москва." },
+    { key: "employment", question: "Какой тип занятости вас интересует? Например: полная занятость, временная, частичная." },
+    { key: "schedule", question: "Какой график вам подходит? Например: Полный рабочий день, Сменная работа." },
+    { key: "salary", question: "Какую минимальную зарплату вы ожидаете? Укажите сумму в рублях." },
+];
+
+
+// Функция для получения следующего вопроса
+function askQuestion(survey) {
+    for (var i = 0; i < surveyQuestions.length; i++) {
+        var question = surveyQuestions[i];
+        if (!survey[question.key]) {
+            return question;
+        }
+    }
+    return null; // Все вопросы заданы
+}
+
+function fillSurvey(survey) {
+    if (!survey.jobTitle) {
+        $reactions.answer("Какую профессию вы ищете? Например: программист, инженер.");
+        $reactions.transition("AwaitJobTitle");
     }
 }

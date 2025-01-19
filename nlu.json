@@ -12,6 +12,7 @@
     "extendedSettings" : {
       "classificationAlgorithmVersion" : 1.0,
       "tokenizerEngine" : "mystem",
+      "allowedPatterns" : [ ],
       "useShared" : false
     },
     "shared" : false,
@@ -40,11 +41,50 @@
     "shared" : false,
     "phrases" : [ {
       "text" : "поиск"
+    }, {
+      "text" : "найди работу"
+    }, {
+      "text" : "хочу найти работу"
+    }, {
+      "text" : "вакансии"
+    }, {
+      "text" : "подбери вакансии"
+    }, {
+      "text" : "подбери"
+    }, {
+      "text" : "предложи"
+    }, {
+      "text" : "выведи вакансии"
+    }, {
+      "text" : "выведи список"
+    }, {
+      "text" : "подбери для меня список вакансий"
+    }, {
+      "text" : "мне нужна работа"
+    }, {
+      "text" : "я хочу найти работу"
+    }, {
+      "text" : "найди мне работу"
+    }, {
+      "text" : "покажи мне работу"
+    }, {
+      "text" : "покажи мне вакансии"
+    }, {
+      "text" : "подбери мне вакансии"
+    }, {
+      "text" : "помоги мне найти работу"
+    }, {
+      "text" : "хочу найти работу"
+    }, {
+      "text" : "поиск вакансий"
+    }, {
+      "text" : "поиск работы"
     } ],
     "classificationRules" : {
       "refs" : [ ]
     },
     "patterns" : [ ],
+    "slots" : [ ],
     "priority" : 0
   }, {
     "path" : "/запрос_минимальной_заработной_платы",
@@ -96,7 +136,7 @@
     "patterns" : [ ],
     "priority" : 0
   }, {
-    "path" : "/запрос_профессии",
+    "path" : "/профессия",
     "enabled" : true,
     "shared" : false,
     "phrases" : [ ],
@@ -136,21 +176,6 @@
     "priority" : 0
   } ],
   "entities" : [ {
-    "entity" : {
-      "name" : "Новая_сущность",
-      "enabled" : true,
-      "shared" : false,
-      "type" : "annotation",
-      "priority" : 1,
-      "noSpelling" : true,
-      "noMorph" : false,
-      "phoneticSearch" : false,
-      "fuzzySearch" : false,
-      "client" : false,
-      "hidden" : false
-    },
-    "records" : [ ]
-  }, {
     "entity" : {
       "name" : "employment",
       "enabled" : true,
@@ -202,26 +227,15 @@
       "noSpelling" : true,
       "noMorph" : false,
       "phoneticSearch" : false,
-      "fuzzySearch" : false,
+      "fuzzySearch" : true,
       "client" : false,
       "hidden" : false
     },
-    "records" : [ ]
-  }, {
-    "entity" : {
-      "name" : "schedule",
-      "enabled" : true,
-      "shared" : false,
-      "type" : "annotation",
-      "priority" : 1,
-      "noSpelling" : true,
-      "noMorph" : false,
-      "phoneticSearch" : false,
-      "fuzzySearch" : false,
-      "client" : false,
-      "hidden" : false
-    },
-    "records" : [ ]
+    "records" : [ {
+      "type" : "synonyms",
+      "rule" : [ "художник", "программист", "водитель" ],
+      "value" : ""
+    } ]
   }, {
     "entity" : {
       "name" : "region",
@@ -236,13 +250,17 @@
       "client" : false,
       "hidden" : false
     },
-    "records" : [ ]
+    "records" : [ {
+      "type" : "synonyms",
+      "rule" : [ "03" ],
+      "value" : ""
+    } ]
   } ],
-  "enabledSystemEntities" : [ "mystem.obsc", "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url", "mlps-obscene.obscene" ],
+  "enabledSystemEntities" : [ "mystem.geo", "mystem.obsc", "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url", "mlps-obscene.obscene" ],
   "spellerDictionary" : [ ],
   "systemEntities" : [ {
     "name" : "mystem.geo",
-    "enabled" : false
+    "enabled" : true
   }, {
     "name" : "mystem.persn",
     "enabled" : false

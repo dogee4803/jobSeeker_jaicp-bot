@@ -3,113 +3,65 @@ require: slotfilling/slotFilling.sc
   module = sys.zb-common
 theme: /
 
+    # Начало и приветствие
     state: Start
         q!: $regex</start>
         random:
             a: Здраствуйте! Этот бот служит для нахождения доступных вакансий. Чем могу вам помочь?
             a: Приветсвую, я бот для поиска вакансии. Как я могу вам помочь?
         buttons:
-            "Заполнить анкету" -> ./Survey
-            "Поиск" -> ./HandleApiResponse
+            "Заполнить анкету" -> /Survey
+            "Поиск" -> /HandleApiResponse
 
     state: Hello
         intent!: /привет
         a: Ещё раз здраствуйте)
 
 
-
+    # Анкетирование пользователя
     state: Survey
         intent!: /анкета
-        random:
-            a: Отлично! Давайте заполним небольшую анкету
-            a: Хорошо, заполним анкету для просмотра вакансий
-            a: Замечательно! Приступим к заполнению анкеты
-        script:
-            // Инициализируем анкету в сессии, если она ещё не создана
-            if (!$session.survey) {
-                $session.survey = {
-                    jobTitle: null,
-                    region: null,
-                    city: null,
-                    employment: null,
-                    schedule: null,
-                    salary: null
-                };
-            }
-    
-            // Проверяем, какие данные ещё не заполнены
-            if (!$session.survey.jobTitle) {
-                $reactions.answer("Какую профессию вы ищете? Например: программист, инженер");
-                $reactions.transition("/Survey/AwaitJobTitle");
-            } else if (!$session.survey.region) {
-                $reactions.answer("В каком регионе вы ищете работу? Например:  Республика Бурятия, Московская область");
-                $reactions.transition = "AwaitRegion";
-            } else if (!$session.survey.region) {
-                $reactions.answer("В каком городе вы ищете работу? Например:  Улан-Удэ, Москва");
-                $reactions.transition = "AwaitCity";
-            } else if (!$session.survey.employment) {
-                $reactions.answer("Какой тип занятости вас интересует? Например: полная занятость, временная, частичная.");
-                $reactions.transition = "AwaitEmployment";
-            } else if (!$session.survey.salary) {
-                $reactions.answer("Какой график вам подходит? Например: Полный рабочий день, Сменная работа, Вахтовый метод, Режим гибкого рабочего времени, Неполный рабочий день/неполная рабочая неделя.");
-                $reactions.transition = "AwaitSchedule";
-            } else if (!$session.survey.schedule) {
-                $reactions.answer("Какую минимальную зарплату вы ожидаете? Укажите сумму в рублях.");
-                $reactions.transition = "AwaitSalary";
-            }
-            
-        state: AwaitJobTitle
-            a: БЛЯТЬ!
-            #q: программист|инженер|разработчик|учитель|менеджер
-            #script:
-                #var jobTitle = $request.query.toLowerCase().trim();
-                #$session.survey.jobTitle = jobTitle;
-                #$reactions.transition("Survey");
-    
-        state: AwaitRegion
-            #q: 03|бурятия|инженер
-            script:
-                var region = $request.query.toLowerCase().trim();
-                $session.survey.region = region;
-                $reactions.transition("Survey");
-            
-        state: AwaitCity
-            #q: москва|питер
-            script:
-                var city = $request.query.toLowerCase().trim();
-                $session.survey.city = city;
-                $reactions.transition("Survey");
-            
-        state: AwaitEmployment
-            #q: полная|временная|частичная
-            script:
-                var employment = $request.query.toLowerCase().trim();
-                $session.survey.employment = employment;
-                $reactions.transition("Survey");
-            
-        state: AwaitSchedule
-            #q: полный|сменная
-            script:
-                var schedule = $request.query.toLowerCase().trim();
-                $session.survey.schedule = schedule;
-                $reactions.transition("Survey");
-    
-        state: AwaitSalary
-            q: * @duckling.number *
-            script:
-                    $session.survey.salary = salary;
-                    $reactions.transition("Survey");
-    
-        state: SurveyComplete
-            script:
-                $reactions.answer("Спасибо! Ваша анкета заполнена.");
-                $reactions.answer("Профессия: " + $session.survey.jobTitle);
-                $reactions.answer("Регион: " + $session.survey.region);
-                $reactions.answer("Город: " + $session.survey.city);
-                $reactions.answer("Тип занятости: " + $session.survey.employment);
-                $reactions.answer("График: " + $session.survey.schedule);
-                $reactions.answer("Минимальная зарплата: " + $session.survey.salary + " руб.");
+        random: 
+            a: Отлично! Давайте заполним небольшую анкету.
+            a: Хорошо, заполним анкету для просмотра вакансий.
+            a: Замечательно! Приступим к заполнению анкеты.
+        a: Какая профессия вас интересует?
 
+        state: AwaitJob
+            # intent: /профессия
+            q: * @profession *
+            a: В каком регионе ищете работу? Напишите пожалуйста номер
+            script:
+                $session.survey.job = $request.query;
+            
+            state: AwaitRegion
+                q: * @region *
+                a: В каком конкретно городе ищете работу?
+                script:
+                    $session.survey.region = $request.query;
+            
+                state: AwaitCity
+                    q: * @mystem.geo *
+                    a: Какой тип занятости вас интересует? Полная, временная или частичная занятость?
+                    script:
+                        $session.survey.city = $request.query;
+                        
+                    state: AwaitEmployment
+                        q: * @employment *
+                        a: От какого размера заработной платы начинать искать?
+                        script:
+                            $session.survey.employment = $request.query;
+                        
+                        state: AwaitSalary
+                            q: * @duckling.number *
+                            a: готово?
+                            script:
+                                $session.survey.salary = $request.query;
+                        
+                            state: SurveyComplete
+                                q: готово
+                                a: Спасибо! Ваша анкета заполнена. Вот что вы указали:
+                                a: Профессия: {{ $session.survey.job }}. Регион: {{ $session.survey.region }}. Город: {{ $session.survey.city }}. Тип занятости: {{ $session.survey.employment }}. Зарплата: {{ $session.survey.salary }} руб.
 
     
     state: HandleApiResponse
