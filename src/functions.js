@@ -1,5 +1,5 @@
-function fetchVacancies() {
-    return $http.get("http://opendata.trudvsem.ru/api/v1/vacancies/region/03?text=программист", {
+function fetchVacancies(job) {
+    return $http.get("http://opendata.trudvsem.ru/api/v1/vacancies/region/03?text=" + job, {
         timeout: 10000
     });
 }
@@ -23,7 +23,8 @@ function showPage(page, vacancies) {
         message += "- **" + vacancy.vacancy.company.name + "** в *" + vacancy.vacancy.region.name + "*\n" +
                    "  Зарплата: " + (vacancy.vacancy.salary || "не указана") + "\n" +
                    "  Контакты: " + contact + "\n" +
-                   "  [Подробнее](" + vacancy.vacancy.vac_url + ")\n\n";
+                   "  Подробнее: " + vacancy.vacancy.vac_url + 
+                   "\n-------------------------------------------\n";
     });
 
     $reactions.answer(message);
@@ -39,35 +40,5 @@ function showPage(page, vacancies) {
     // Если есть кнопки, отображаем их
     if (buttons.length > 0) {
         $reactions.buttons(buttons);
-    }
-}
-
-
-// Определяем вопросы для анкеты
-var surveyQuestions = [
-    { key: "jobTitle", question: "Какую профессию вы ищете? Например: программист, инженер." },
-    { key: "region", question: "В каком регионе вы ищете работу? Например: Республика Бурятия, Московская область." },
-    { key: "city", question: "В каком городе вы ищете работу? Например: Улан-Удэ, Москва." },
-    { key: "employment", question: "Какой тип занятости вас интересует? Например: полная занятость, временная, частичная." },
-    { key: "schedule", question: "Какой график вам подходит? Например: Полный рабочий день, Сменная работа." },
-    { key: "salary", question: "Какую минимальную зарплату вы ожидаете? Укажите сумму в рублях." },
-];
-
-
-// Функция для получения следующего вопроса
-function askQuestion(survey) {
-    for (var i = 0; i < surveyQuestions.length; i++) {
-        var question = surveyQuestions[i];
-        if (!survey[question.key]) {
-            return question;
-        }
-    }
-    return null; // Все вопросы заданы
-}
-
-function fillSurvey(survey) {
-    if (!survey.jobTitle) {
-        $reactions.answer("Какую профессию вы ищете? Например: программист, инженер.");
-        $reactions.transition("AwaitJobTitle");
     }
 }

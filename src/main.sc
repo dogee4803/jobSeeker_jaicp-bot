@@ -68,7 +68,7 @@ theme: /
         intent!: /поиск
         script:
             # Выполняем запрос через API для поиска вакансий
-            fetchVacancies().then(function (res) {
+            fetchVacancies($session.survey.job).then(function (res) {
                 if (res.status === '200' && res.results.vacancies.length > 0) {
                     $session.vacancies = res.results.vacancies;
                     $session.page = 0;
