@@ -23,6 +23,18 @@
     }
   },
   "intents" : [ {
+    "path" : "/анкета",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "анкета"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
     "path" : "/поиск",
     "enabled" : true,
     "shared" : false,
@@ -53,10 +65,15 @@
     "shared" : false,
     "phrases" : [ {
       "text" : "пока"
+    }, {
+      "text" : "До свидания"
+    }, {
+      "text" : "покеда"
     } ],
     "classificationRules" : {
       "refs" : [ ]
     },
+    "patterns" : [ ],
     "priority" : 0
   }, {
     "path" : "/привет",
@@ -65,9 +82,13 @@
     "phrases" : [ {
       "text" : "привет"
     }, {
-      "text" : "Покеда"
+      "text" : "здраствуйте"
     }, {
-      "text" : "до свидания"
+      "text" : "здрасте"
+    }, {
+      "text" : "hi"
+    }, {
+      "text" : "прив"
     } ],
     "classificationRules" : {
       "refs" : [ ]
@@ -116,7 +137,7 @@
   } ],
   "entities" : [ {
     "entity" : {
-      "name" : "employment",
+      "name" : "Новая_сущность",
       "enabled" : true,
       "shared" : false,
       "type" : "annotation",
@@ -129,6 +150,33 @@
       "hidden" : false
     },
     "records" : [ ]
+  }, {
+    "entity" : {
+      "name" : "employment",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : true,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "pattern",
+      "rule" : [ "(частичная|частичная\\s*занятость|частичная\\s*работа|неполный|неполная\\s*занятость|неполная\\s*работа|парттайм|парт\\s*-?\\s*time|part\\s*-?\\s*time|парт\\s*работа|парт\\s*тайм|частич\\s*ка|чстчн\\s*ая)" ],
+      "value" : ""
+    }, {
+      "type" : "pattern",
+      "rule" : [ "(полная|полный|полн|на\\s*полную|фултайм|фуллтайм|full\\s*-?\\s*time|фулл|на\\s*полн)" ],
+      "value" : ""
+    }, {
+      "type" : "pattern",
+      "rule" : [ "(временная|временная\\s*занятость|временная\\s*работа|на\\s*время|времянка|врем\\s*енная|времнная|врем\\s*работа|врем\\s*ка|врм|врем)" ],
+      "value" : ""
+    } ]
   }, {
     "entity" : {
       "name" : "salary",
