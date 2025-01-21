@@ -32,54 +32,54 @@ theme: /
             q: * @profession *
             a: В каком регионе ищете работу? Напишите пожалуйста номер
             script:
-                $session.survey.job = $request.query;
+                $session.survey.job = $parseTree._profession.name
             
             state: AwaitRegion
                 q: * @region *
-                a: В каком конкретно городе ищете работу?
+                a: Какой тип занятости вас интересует? Полная, временная или частичная занятость?
                 script:
-                    $session.survey.region = $request.query;
-            
-                state: AwaitCity
-                    q: * @mystem.geo *
-                    a: Какой тип занятости вас интересует? Полная, временная или частичная занятость?
-                    script:
-                        $session.survey.city = $request.query;
-                        
-                    state: AwaitEmployment
-                        q: * @employment *
-                        a: От какого размера заработной платы начинать искать?
-                        script:
-                            $session.survey.employment = $request.query;
-                        
-                        state: AwaitSalary
-                            q: * @duckling.number *
-                            a: готово?
-                            script:
-                                $session.survey.salary = $request.query;
-                        
-                            state: SurveyComplete
-                                q: готово
-                                a: Спасибо! Ваша анкета заполнена. Вот что вы указали:
-                                a: Профессия: {{ $session.survey.job }}. Регион: {{ $session.survey.region }}. Город: {{ $session.survey.city }}. Тип занятости: {{ $session.survey.employment }}. Зарплата: {{ $session.survey.salary }} руб.
+                    $session.survey.region = $parseTree._region.code;
 
-    
+                state: AwaitEmployment
+                    q: * @employment *
+                    a: От какого размера заработной платы начинать искать?
+                    script:
+                        $session.survey.employment = $parseTree._employment.name
+                    
+                    state: AwaitSalary
+                        q: * @duckling.number *
+                        a: Спасибо! Ваша анкета заполнена. Вот что вы указали:
+                        script:
+                            $session.survey.salary = $entities[0].value;
+                        a: Профессия: {{ $session.survey.job }};\n Регион: {{ $session.survey.region }};\n Тип занятости: {{ $session.survey.employment }};\n Зарплата: {{ $session.survey.salary }} руб.
+                        buttons:
+                            "Заполнить анкету ещё раз" -> /Survey
+                            "Поиск вакансий" -> /HandleApiResponse
+                            
+
+    # Поиск вакансий
     state: HandleApiResponse
         intent!: /поиск
         script:
-            # Выполняем запрос через API для поиска вакансий
-            fetchVacancies($session.survey.job).then(function (res) {
-                if (res.status === '200' && res.results.vacancies.length > 0) {
-                    $session.vacancies = res.results.vacancies;
-                    $session.page = 0;
-                    $reactions.answer("Вакансии успешно найдены! Перехожу к отображению...");
-                    showPage($session.page, $session.vacancies);
-                } else {
-                    $reactions.answer("К сожалению, вакансии по вашему запросу не найдены.");
-                }
-            }).catch(function (err) {
-                $reactions.answer("Что-то сервер барахлит. Не могу узнать погоду.");
-            });
+            if (!$session.survey) {
+                $reactions.answer("К сожалению нет ваших данных :( Необходимо заполнить анкету.");
+                $reactions.buttons({ text: "Заполнить анкету", transition: "/Survey" });
+            }
+            else {
+                # Выполняем запрос через API для поиска вакансий
+                fetchVacancies($session.survey).then(function (res) {
+                    if (res.status === '200' && res.results.vacancies.length > 0) {
+                        $session.vacancies = res.results.vacancies;
+                        $session.page = 0;
+                        $reactions.answer("Вакансии успешно найдены! Перехожу к отображению...");
+                        showPage($session.page, $session.vacancies);
+                    } else {
+                        $reactions.answer("К сожалению, вакансии по вашему запросу не найдены.");
+                    }
+                }).catch(function (err) {
+                    $reactions.answer("Что-то сервер барахлит. Не могу узнать погоду.");
+                });
+            }
     
         state: NextPage
             q: *след*
@@ -106,6 +106,28 @@ theme: /
                 }
                
                
+    # Рекомендация вакансий
+    state: Recommendations
+        intent!: /рекомендация
+        random:
+            a: Запросто! Сейчас что-нибудь придумаю.
+            a: Хорошо, постараюсь подобрать.
+        script:
+            $session.rec.sphere = $parseTree._sphere.name
+            $session.rec.area = $parseTree._area.name
+            fetchRecommendations($session.rec.sphere, $session.rec.area).then(function (res) {
+                    if (res.status === '200' && res.recommendations.length > 0) {
+                        $session.recommendations = res.recommendations;
+                        $session.page = 0;
+                        $reactions.answer("Постарался подобрать. Посмотрите...");
+                        showPage($session.page, $session.recommendations);
+                    } else {
+                        $reactions.answer("К сожалению, не могу решить что вам порекомендовать :(");
+                    }
+                }).catch(function (err) {
+                    $reactions.answer("Что-то сервер барахлит. Не могу получить рекомендации.");
+                });
+               
                 
                 
     state: Bye
@@ -114,6 +136,8 @@ theme: /
             a: Всего доброго! Рад был помочь)
             a: До свидания! Надеюсь смог вам помочь
             a: Удачи! Рад что был вам полезен)
+        script:
+            $jsapi.stopSession();
 
 
 
@@ -123,6 +147,9 @@ theme: /
             a: Извините, я не понимаю. Переформулируйте, пожалуйста
             a: Простите, кажется я вас не понял. Напишите своё предложение иначе.
             a: К сожалению я не понял, что значит следующее сообщение: {{$request.query}}
+        buttons:
+            "Заполнить анкету" -> /Survey
+            "Поиск" -> /HandleApiResponse
 
 
 
@@ -132,6 +159,9 @@ theme: /
             a: Ваше сообщение содержит нецензурные слова. Пожалуйста, используйте более корректные выражения.
             a: Пожалуйста, избегайте нецензурных выражений. Мы стараемся поддерживать уважительную атмосферу.
             a: Давайте соблюдать нормы приличия и не использовать подобные выражения.
+        buttons:
+            "Заполнить анкету" -> /Survey
+            "Поиск" -> /HandleApiResponse
 
     state: ProfanityAlt
         q!: * @mlps-obscene.obscene *
@@ -139,3 +169,6 @@ theme: /
             a: Ваше сообщение содержит нецензурные слова. Пожалуйста, используйте более корректные выражения.
             a: Пожалуйста, избегайте нецензурных выражений. Мы стараемся поддерживать уважительную атмосферу.
             a: Давайте соблюдать нормы приличия и не использовать подобные выражения.
+        buttons:
+            "Заполнить анкету" -> /Survey
+            "Поиск" -> /HandleApiResponse

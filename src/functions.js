@@ -1,8 +1,17 @@
-function fetchVacancies(job) {
-    return $http.get("http://opendata.trudvsem.ru/api/v1/vacancies/region/03?text=" + job, {
+function fetchVacancies(survey) {
+    return $http.get("http://opendata.trudvsem.ru/api/v1/vacancies/region/" + survey.region + "?text=" + survey.job, {
         timeout: 10000
     });
 }
+
+function fetchRecommendations(sphere, area){
+    var response = $http.get("https://2d11-185-177-229-241.ngrok-free.app/vacancy_recommendation?sphere=" + sphere + "&area=" + area, {
+        timeout: 10000
+    });
+    var result = response.recommendations;
+    return result;
+}
+
 
 // Функция для вывода вакансий с пагинацией
 function showPage(page, vacancies) {
@@ -23,8 +32,7 @@ function showPage(page, vacancies) {
         message += "- **" + vacancy.vacancy.company.name + "** в *" + vacancy.vacancy.region.name + "*\n" +
                    "  Зарплата: " + (vacancy.vacancy.salary || "не указана") + "\n" +
                    "  Контакты: " + contact + "\n" +
-                   "  Подробнее: " + vacancy.vacancy.vac_url + 
-                   "\n-------------------------------------------\n";
+                   "  Подробнее: " + vacancy.vacancy.vac_url + "\n\n";
     });
 
     $reactions.answer(message);
