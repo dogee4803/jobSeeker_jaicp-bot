@@ -117,21 +117,21 @@ theme: /
         script:
             if (!$session.rec) {
                     $session.rec = {};
-                }
+            }
             $session.rec.sphere = $parseTree._sphere.name;
             $session.rec.area = $parseTree._area.name;
             fetchRecommendations($session.rec.sphere, $session.rec.area).then(function (res) {
-                    if (res.status === '200' && res.recommendations.length > 0) {
-                        $session.recommendations = res.recommendations;
-                        $session.page = 0;
-                        $reactions.answer("Постарался подобрать. Посмотрите...");
-                        showPage($session.page, $session.recommendations);
-                    } else {
-                        $reactions.answer("К сожалению, не могу решить что вам порекомендовать :(");
-                    }
-                }).catch(function (err) {
-                    $reactions.answer("Что-то сервер барахлит. Не могу получить рекомендации.");
-                });
+                if (res.status_code === 200 && res.recommendations.length > 0) {
+                    $session.recommendations = res.recommendations;
+                    $session.page = 0;
+                    $reactions.answer("Постарался подобрать. Посмотрите...");
+                    showPage($session.page, $session.recommendations);
+                } else {
+                    $reactions.answer("К сожалению, не могу решить что вам порекомендовать :(");
+                }
+            }).catch(function (err) {
+                $reactions.answer("Что-то сервер барахлит. Не могу получить рекомендации.");
+            });
                 
     
         state: NextPage

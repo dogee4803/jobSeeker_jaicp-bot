@@ -534,7 +534,7 @@
     },
     "records" : [ {
       "type" : "synonyms",
-      "rule" : [ "Мед", "Медецина", "Медицина" ],
+      "rule" : [ "Мед", "Медицина" ],
       "value" : "{\n  \"name\": \"Медицина\"\n}"
     }, {
       "type" : "synonyms",
@@ -667,11 +667,11 @@
       "value" : "{\n  \"name\": \"Хирургия\"\n}"
     } ]
   } ],
-  "enabledSystemEntities" : [ "mystem.geo", "mystem.obsc", "pymorphy.geox", "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url", "mlps-obscene.obscene" ],
+  "enabledSystemEntities" : [ "mystem.obsc", "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url", "mlps-obscene.obscene" ],
   "spellerDictionary" : [ ],
   "systemEntities" : [ {
     "name" : "mystem.geo",
-    "enabled" : true
+    "enabled" : false
   }, {
     "name" : "mystem.persn",
     "enabled" : false
@@ -710,7 +710,7 @@
     "enabled" : false
   }, {
     "name" : "pymorphy.geox",
-    "enabled" : true
+    "enabled" : false
   }, {
     "name" : "pymorphy.orgn",
     "enabled" : false

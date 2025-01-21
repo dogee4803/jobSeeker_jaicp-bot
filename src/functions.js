@@ -5,11 +5,9 @@ function fetchVacancies(survey) {
 }
 
 function fetchRecommendations(sphere, area){
-    var response = $http.get("https://2d11-185-177-229-241.ngrok-free.app/vacancy_recommendation?sphere=" + sphere + "&area=" + area, {
+    return $http.get("https://2d11-185-177-229-241.ngrok-free.app/vacancy_recommendation?sphere=" + sphere + "&area=" + area, {
         timeout: 10000
     });
-    var result = response.recommendations;
-    return result;
 }
 
 
@@ -30,7 +28,7 @@ function showPage(page, vacancies) {
             : "нет данных";
 
         message += "- **" + vacancy.vacancy.company.name + "** в *" + vacancy.vacancy.region.name + "*\n" +
-                   "  Должность: " + (vacancy.vacancy.job-name || "не указана") + "\n" +
+                   "  Должность: " + (vacancy.vacancy["job-name"] || "не указана") + "\n" +
                    "  Зарплата: " + (vacancy.vacancy.salary || "не указана") + "\n" +
                    "  Контакты: " + contact + "\n" +
                    "  Подробнее: " + (vacancy.vacancy.vac_url || "нет ссылки") + "\n\n";
@@ -40,10 +38,10 @@ function showPage(page, vacancies) {
 
     var buttons = [];
     if (startIndex > 0) {
-        buttons.push("предыдущая страница");
+        buttons.push("предыдущая");
     }
     if (endIndex < vacancies.length) {
-        buttons.push("следующая страница");
+        buttons.push("следующая");
     }
 
     // Если есть кнопки, отображаем их
