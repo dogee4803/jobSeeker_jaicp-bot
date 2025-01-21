@@ -30,9 +30,10 @@ function showPage(page, vacancies) {
             : "нет данных";
 
         message += "- **" + vacancy.vacancy.company.name + "** в *" + vacancy.vacancy.region.name + "*\n" +
+                   "  Должность: " + (vacancy.vacancy.job-name || "не указана") + "\n" +
                    "  Зарплата: " + (vacancy.vacancy.salary || "не указана") + "\n" +
                    "  Контакты: " + contact + "\n" +
-                   "  Подробнее: " + vacancy.vacancy.vac_url + "\n\n";
+                   "  Подробнее: " + (vacancy.vacancy.vac_url || "нет ссылки") + "\n\n";
     });
 
     $reactions.answer(message);

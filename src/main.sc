@@ -28,10 +28,12 @@ theme: /
         a: Какая профессия вас интересует?
 
         state: AwaitJob
-            # intent: /профессия
             q: * @profession *
-            a: В каком регионе ищете работу? Напишите пожалуйста номер
+            a: В каком регионе ищете работу?
             script:
+                if (!$session.survey) {
+                    $session.survey = {};
+                }
                 $session.survey.job = $parseTree._profession.name
             
             state: AwaitRegion
@@ -44,14 +46,14 @@ theme: /
                     q: * @employment *
                     a: От какого размера заработной платы начинать искать?
                     script:
-                        $session.survey.employment = $parseTree._employment.name
+                        $session.survey.employment = $parseTree._employment.name;
                     
                     state: AwaitSalary
                         q: * @duckling.number *
                         a: Спасибо! Ваша анкета заполнена. Вот что вы указали:
                         script:
                             $session.survey.salary = $entities[0].value;
-                        a: Профессия: {{ $session.survey.job }};\n Регион: {{ $session.survey.region }};\n Тип занятости: {{ $session.survey.employment }};\n Зарплата: {{ $session.survey.salary }} руб.
+                        a: Профессия: {{ $session.survey.job }};\n Номер региона: {{ $session.survey.region }};\n Тип занятости: {{ $session.survey.employment }};\n Зарплата: {{ $session.survey.salary }} руб.
                         buttons:
                             "Заполнить анкету ещё раз" -> /Survey
                             "Поиск вакансий" -> /HandleApiResponse
@@ -113,8 +115,11 @@ theme: /
             a: Запросто! Сейчас что-нибудь придумаю.
             a: Хорошо, постараюсь подобрать.
         script:
-            $session.rec.sphere = $parseTree._sphere.name
-            $session.rec.area = $parseTree._area.name
+            if (!$session.rec) {
+                    $session.rec = {};
+                }
+            $session.rec.sphere = $parseTree._sphere.name;
+            $session.rec.area = $parseTree._area.name;
             fetchRecommendations($session.rec.sphere, $session.rec.area).then(function (res) {
                     if (res.status === '200' && res.recommendations.length > 0) {
                         $session.recommendations = res.recommendations;
@@ -127,6 +132,31 @@ theme: /
                 }).catch(function (err) {
                     $reactions.answer("Что-то сервер барахлит. Не могу получить рекомендации.");
                 });
+                
+    
+        state: NextPage
+            q: *след*
+            script:
+                if ($session.page !== undefined && $session.recommendations) {
+                    $session.page++;
+                    if ($session.page * 3 < $session.recommendations.length) {
+                        showPage($session.page, $session.recommendations);
+                    } else {
+                        $reactions.answer("Это последняя страница.");
+                    }
+                } else {
+                    $reactions.answer("Сначала выполните поиск вакансий.");
+                }
+                
+        state: PrevPage
+            q: *пред*
+            script:
+                if ($session.page > 0) {
+                    $session.page--;
+                    showPage($session.page, $session.recommendations);
+                } else {
+                    $reactions.answer("Это первая страница.");
+                }
                
                 
                 
