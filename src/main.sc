@@ -28,7 +28,7 @@ theme: /
         a: Какая профессия вас интересует?
 
         state: AwaitJob
-            q: * @profession *
+            intent: /работа
             a: В каком регионе ищете работу?
             script:
                 if (!$session.survey) {
@@ -37,19 +37,19 @@ theme: /
                 $session.survey.job = $parseTree._profession.name
             
             state: AwaitRegion
-                q: * @region *
+                intent: /регион
                 a: Какой тип занятости вас интересует? Полная, временная или частичная занятость?
                 script:
                     $session.survey.region = $parseTree._region.code;
 
                 state: AwaitEmployment
-                    q: * @employment *
+                    intent: /трудоустройство
                     a: От какого размера заработной платы начинать искать?
                     script:
                         $session.survey.employment = $parseTree._employment.name;
                     
                     state: AwaitSalary
-                        q: * @duckling.number *
+                        intent: /Зарплата
                         a: Спасибо! Ваша анкета заполнена. Вот что вы указали:
                         script:
                             $session.survey.salary = $entities[0].value;
@@ -58,6 +58,25 @@ theme: /
                             "Заполнить анкету ещё раз" -> /Survey
                             "Поиск вакансий" -> /HandleApiResponse
                             
+                    state: nonSalary
+                        event: noMatch
+                        a: Извините, я не понимаю. Ожидаю от вас тип зарплату
+                        go: /Survey/AwaitJob/AwaitRegion/AwaitEmployment/AwaitSalary
+                           
+                state: nonEmployment
+                    event: noMatch
+                    a: Извините, я не понимаю. Ожидаю от вас тип занятости
+                    go: /Survey/AwaitJob/AwaitRegion/AwaitEmployment
+                
+            state: nonRegion
+                event: noMatch
+                a: Извините, я не понимаю. Ожидаю от вас регион
+                go: /Survey/AwaitJob/AwaitRegion
+                            
+        state: nonJob
+            event: noMatch
+            a: Извините, я не понимаю. Ожидаю от вас название профессии
+            go: /Survey/AwaitJob
 
     # Поиск вакансий
     state: HandleApiResponse
@@ -83,8 +102,8 @@ theme: /
                 });
             }
     
-        state: NextPage
-            q: *след*
+        state: NextPageS
+            intent: /след
             script:
                 if ($session.page !== undefined && $session.vacancies) {
                     $session.page++;
@@ -97,8 +116,8 @@ theme: /
                     $reactions.answer("Сначала выполните поиск вакансий.");
                 }
                 
-        state: PrevPage
-            q: *пред*
+        state: PrevPageS
+            intent: /пред
             script:
                 if ($session.page > 0) {
                     $session.page--;
@@ -134,8 +153,8 @@ theme: /
             });
                 
     
-        state: NextPage
-            q: *след*
+        state: NextPageR
+            intent: /след
             script:
                 if ($session.page !== undefined && $session.recommendations) {
                     $session.page++;
@@ -148,8 +167,8 @@ theme: /
                     $reactions.answer("Сначала выполните поиск вакансий.");
                 }
                 
-        state: PrevPage
-            q: *пред*
+        state: PrevPageR
+            intent: /пред
             script:
                 if ($session.page > 0) {
                     $session.page--;
@@ -157,8 +176,6 @@ theme: /
                 } else {
                     $reactions.answer("Это первая страница.");
                 }
-               
-                
                 
     state: Bye
         intent!: /пока
@@ -168,8 +185,6 @@ theme: /
             a: Удачи! Рад что был вам полезен)
         script:
             $jsapi.stopSession();
-
-
 
     state: NoMatch
         event!: noMatch
@@ -184,7 +199,7 @@ theme: /
 
 
     state: Profanity
-        q!: * @mystem.obsc *
+        intent!: /маты
         random:
             a: Ваше сообщение содержит нецензурные слова. Пожалуйста, используйте более корректные выражения.
             a: Пожалуйста, избегайте нецензурных выражений. Мы стараемся поддерживать уважительную атмосферу.
@@ -194,7 +209,7 @@ theme: /
             "Поиск" -> /HandleApiResponse
 
     state: ProfanityAlt
-        q!: * @mlps-obscene.obscene *
+        intent!: /маты_альт
         random:
             a: Ваше сообщение содержит нецензурные слова. Пожалуйста, используйте более корректные выражения.
             a: Пожалуйста, избегайте нецензурных выражений. Мы стараемся поддерживать уважительную атмосферу.

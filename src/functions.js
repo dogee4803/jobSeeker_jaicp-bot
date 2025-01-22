@@ -5,7 +5,7 @@ function fetchVacancies(survey) {
 }
 
 function fetchRecommendations(sphere, area){
-    return $http.get("https://2d11-185-177-229-241.ngrok-free.app/vacancy_recommendation?sphere=" + sphere + "&area=" + area, {
+    return $http.get("https://2d7a-185-177-229-241.ngrok-free.app/vacancy_recommendation?sphere=" + sphere + "&area=" + area, {
         timeout: 10000
     });
 }

@@ -170,6 +170,157 @@
       "prompts" : [ "В какой области данной сферы работаете?" ]
     } ],
     "priority" : 0
+  }, {
+    "path" : "/трудоустройство",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "@employment"
+    } ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "employment",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/регион",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "@region"
+    } ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "region",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/маты",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "@mystem.obsc"
+    } ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "mystem.obsc",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/пред",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "@prev"
+    } ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "prev",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/работа",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "@profession"
+    } ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "profession",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "slots" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/Зарплата",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "@duckling.number"
+    } ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "duckling.number",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/сфера",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "@sphere"
+    } ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "sphere",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/след",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "@next"
+    } ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "next",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/область_сферы",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "@area"
+    } ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "area",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/маты_альт",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "@mlps-obscene.obscene"
+    } ],
+    "classificationRules" : {
+      "refs" : [ {
+        "entityName" : "mlps-obscene.obscene",
+        "predicate" : "CONTAINS"
+      } ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
   } ],
   "entities" : [ {
     "entity" : {
@@ -540,6 +691,44 @@
       "type" : "synonyms",
       "rule" : [ "IT", "Айти" ],
       "value" : "{\n  \"name\": \"IT\"\n}"
+    } ]
+  }, {
+    "entity" : {
+      "name" : "prev",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : false,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "pattern",
+      "rule" : [ "(*пред*)" ],
+      "value" : ""
+    } ]
+  }, {
+    "entity" : {
+      "name" : "next",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : false,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "pattern",
+      "rule" : [ "(*след*)" ],
+      "value" : ""
     } ]
   }, {
     "entity" : {
